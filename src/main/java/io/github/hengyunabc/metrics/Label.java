@@ -6,6 +6,11 @@ public class Label
 
     private String value;
 
+    public Label() {
+        this.name = "";
+        this.value = "";
+    }
+
     public Label(String name, String value) {
         this.name = name;
         this.value = value;
