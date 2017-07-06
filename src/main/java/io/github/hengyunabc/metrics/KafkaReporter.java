@@ -1,6 +1,7 @@
 package io.github.hengyunabc.metrics;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -26,6 +27,8 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
+import io.github.hengyunabc.metrics.Label;
+
 /**
  *
  * @author hengyunabc
@@ -39,7 +42,7 @@ public class KafkaReporter extends ScheduledReporter {
 	String topic;
 	ProducerConfig config;
 	Producer<String, String> producer;
-	Map<String, String> labels;
+	List<Label> labels;
 	ExecutorService kafkaExecutor;
 
 	private String prefix;
@@ -54,12 +57,12 @@ public class KafkaReporter extends ScheduledReporter {
         MetricRegistry registry, String name,
         TimeUnit rateUnit, TimeUnit durationUnit, boolean showSamples, MetricFilter filter,
         String topic, ProducerConfig config, String prefix,
-        String hostName, String ip, Map<String,String> labels) {
+        String hostname, String ip, List<Label> labels) {
 		super(registry, name, filter, rateUnit, durationUnit);
 		this.topic = topic;
 		this.config = config;
 		this.prefix = prefix.equals(null) ? "" : prefix;
-		this.hostName = hostName;
+		this.hostname = hostname;
 		this.ip = ip;
         this.labels = labels;
 
@@ -91,9 +94,9 @@ public class KafkaReporter extends ScheduledReporter {
 		private MetricFilter filter;
 
 		private String prefix = "";
-		private String hostName;
+		private String hostname;
 		private String ip;
-        private Map<String, String> labels;
+		private List<Label> labels;
 
 		private String topic;
 		private ProducerConfig config;
@@ -172,13 +175,13 @@ public class KafkaReporter extends ScheduledReporter {
 			return this;
 		}
 
-		public Builder labels(Map<String,String> labels) {
+		public Builder labels(List<Label> labels) {
 			this.labels = labels;
 			return this;
 		}
 
-		public Builder hostName(String hostName) {
-			this.hostName = hostName;
+		public Builder hostname(String hostname) {
+			this.hostname = hostname;
 			return this;
 		}
 
@@ -193,9 +196,9 @@ public class KafkaReporter extends ScheduledReporter {
 		 * @return a {@link KafkaReporter}
 		 */
 		public KafkaReporter build() {
-			if (hostName == null) {
-				hostName = HostUtil.getHostName();
-				logger.info(name + " detect hostName: " + hostName);
+			if (hostname == null) {
+				hostname = HostUtil.getHostname();
+				logger.info(name + " detect hostname: " + hostname);
 			}
 			if (ip == null) {
 				ip = HostUtil.getHostAddress();
@@ -204,7 +207,7 @@ public class KafkaReporter extends ScheduledReporter {
 
 			return new KafkaReporter(
                 registry, name, rateUnit, durationUnit, showSamples,
-                filter, topic, config, prefix, hostName, ip, labels);
+                filter, topic, config, prefix, hostname, ip, labels);
 		}
 	}
 
@@ -225,7 +228,7 @@ public class KafkaReporter extends ScheduledReporter {
 
 		final Map<String, Object> result = new HashMap<String, Object>(16);
 
-		result.put("hostName", hostName);
+		result.put("hostname", hostname);
 		result.put("ip", ip);
 		result.put("rateUnit", getRateUnit());
 		result.put("durationUnit", getDurationUnit());
