@@ -61,7 +61,7 @@ public class KafkaReporter extends ScheduledReporter {
 		super(registry, name, filter, rateUnit, durationUnit);
 		this.topic = topic;
 		this.config = config;
-		this.prefix = prefix.equals(null) ? "" : prefix;
+		this.prefix = prefix == null ? "" : prefix;
 		this.hostName = hostName;
 		this.ip = ip;
         this.labels = labels;
