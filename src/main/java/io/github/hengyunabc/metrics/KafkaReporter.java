@@ -57,12 +57,12 @@ public class KafkaReporter extends ScheduledReporter {
         MetricRegistry registry, String name,
         TimeUnit rateUnit, TimeUnit durationUnit, boolean showSamples, MetricFilter filter,
         String topic, ProducerConfig config, String prefix,
-        String hostname, String ip, List<Label> labels) {
+        String hostName, String ip, List<Label> labels) {
 		super(registry, name, filter, rateUnit, durationUnit);
 		this.topic = topic;
 		this.config = config;
 		this.prefix = prefix.equals(null) ? "" : prefix;
-		this.hostname = hostname;
+		this.hostName = hostName;
 		this.ip = ip;
         this.labels = labels;
 
@@ -94,7 +94,7 @@ public class KafkaReporter extends ScheduledReporter {
 		private MetricFilter filter;
 
 		private String prefix = "";
-		private String hostname;
+		private String hostName;
 		private String ip;
 		private List<Label> labels;
 
@@ -180,8 +180,8 @@ public class KafkaReporter extends ScheduledReporter {
 			return this;
 		}
 
-		public Builder hostname(String hostname) {
-			this.hostname = hostname;
+		public Builder hostName(String hostName) {
+			this.hostName = hostName;
 			return this;
 		}
 
@@ -196,9 +196,9 @@ public class KafkaReporter extends ScheduledReporter {
 		 * @return a {@link KafkaReporter}
 		 */
 		public KafkaReporter build() {
-			if (hostname == null) {
-				hostname = HostUtil.getHostname();
-				logger.info(name + " detect hostname: " + hostname);
+			if (hostName == null) {
+				hostName = HostUtil.getHostName();
+				logger.info(name + " detect hostName: " + hostName);
 			}
 			if (ip == null) {
 				ip = HostUtil.getHostAddress();
@@ -207,7 +207,7 @@ public class KafkaReporter extends ScheduledReporter {
 
 			return new KafkaReporter(
                 registry, name, rateUnit, durationUnit, showSamples,
-                filter, topic, config, prefix, hostname, ip, labels);
+                filter, topic, config, prefix, hostName, ip, labels);
 		}
 	}
 
@@ -228,7 +228,7 @@ public class KafkaReporter extends ScheduledReporter {
 
 		final Map<String, Object> result = new HashMap<String, Object>(16);
 
-		result.put("hostname", hostname);
+		result.put("hostname", hostName);
 		result.put("ip", ip);
 		result.put("rateUnit", getRateUnit());
 		result.put("durationUnit", getDurationUnit());
