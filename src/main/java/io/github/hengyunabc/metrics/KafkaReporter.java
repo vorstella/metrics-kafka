@@ -27,8 +27,6 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
-import io.github.hengyunabc.metrics.Label;
-
 /**
  *
  * @author hengyunabc
@@ -42,7 +40,7 @@ public class KafkaReporter extends ScheduledReporter {
 	String topic;
 	ProducerConfig config;
 	Producer<String, String> producer;
-	List<Label> labels;
+	Map<String,String> labels;
 	ExecutorService kafkaExecutor;
 
 	private String prefix;
@@ -57,7 +55,7 @@ public class KafkaReporter extends ScheduledReporter {
         MetricRegistry registry, String name,
         TimeUnit rateUnit, TimeUnit durationUnit, boolean showSamples, MetricFilter filter,
         String topic, ProducerConfig config, String prefix,
-        String hostName, String ip, List<Label> labels) {
+        String hostName, String ip, Map<String,String> labels) {
 		super(registry, name, filter, rateUnit, durationUnit);
 		this.topic = topic;
 		this.config = config;
@@ -96,7 +94,7 @@ public class KafkaReporter extends ScheduledReporter {
 		private String prefix = "";
 		private String hostName;
 		private String ip;
-		private List<Label> labels;
+		private Map<String,String> labels;
 
 		private String topic;
 		private ProducerConfig config;
@@ -175,7 +173,7 @@ public class KafkaReporter extends ScheduledReporter {
 			return this;
 		}
 
-		public Builder labels(List<Label> labels) {
+		public Builder labels(Map<String,String> labels) {
 			this.labels = labels;
 			return this;
 		}
