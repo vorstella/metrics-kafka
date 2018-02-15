@@ -33,10 +33,10 @@ public class SpringTest {
 	}
 	
 	public void startKafkaReporter(){
-		String hostName = "192.168.66.30";
+		String hostName = "127.0.0.1";
 		String topic = "test-kafka-reporter";
 		Properties props = new Properties();
-		props.put("metadata.broker.list", "192.168.90.147:9091");
+		props.put("metadata.broker.list", "127.0.0.1:9092");
 		props.put("serializer.class", "kafka.serializer.StringEncoder");
 		props.put("partitioner.class", "kafka.producer.DefaultPartitioner");
 		props.put("request.required.acks", "1");

@@ -6,14 +6,14 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.github.hengyunabc</groupId>
+	<groupId>com.vorstella</groupId>
 	<artifactId>metrics-kafka</artifactId>
 	<version>0.0.1</version>
 
 	<name>metrics-kafka</name>
 	<description>Dropwizard Metrics reporter for kafka.</description>
-	<url>https://github.com/hengyunabc/metrics-kafka</url>
-	<inceptionYear>2015</inceptionYear>
+	<url>https://github.com/vorstella/metrics-kafka</url>
+	<inceptionYear>2018</inceptionYear>
 
 	<licenses>
 		<license>
@@ -33,15 +33,15 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:hengyunabc/metrics-kafka.git</connection>
-		<developerConnection>scm:git:git@github.com:hengyunabc/metrics-kafka.git</developerConnection>
-		<url>https://github.com/hengyunabc/metrics-kafka</url>
+		<connection>scm:git:git@github.com:vorstella/metrics-kafka.git</connection>
+		<developerConnection>scm:git:git@github.com:vorstella/metrics-kafka.git</developerConnection>
+		<url>https://github.com/vorstella/metrics-kafka</url>
 	</scm>
 
 	<properties>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<java.version>1.6</java.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -218,6 +218,20 @@
 						<id>attach-javadocs</id>
 						<goals>
 							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- check for known vulnerabilities in dependencies -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
