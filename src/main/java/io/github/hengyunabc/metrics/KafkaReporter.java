@@ -151,7 +151,8 @@ public class KafkaReporter extends ScheduledReporter {
 		 * default register name is "kafka-reporter".
 		 *
 		 * @param name
-		 * @return
+		 * 			name of reporter
+		 * @return {@code this}
 		 */
 		public Builder name(String name) {
 			this.name = name;
