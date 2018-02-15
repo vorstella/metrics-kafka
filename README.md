@@ -24,6 +24,8 @@ mvn dependency-check:check
 ## Content
 
 - [CHANGELOG](./CHANGELOG.md)
+- [Deployment Instructions](./docs/deployment.md)
+- [Testing](./docs/testing.md)
 
 ## License
 
