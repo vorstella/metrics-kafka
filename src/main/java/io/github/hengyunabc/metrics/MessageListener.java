@@ -11,7 +11,7 @@ public interface MessageListener {
 	/**
 	 * receive metrics message, not threadsafe.
 	 * 
-	 * @param jsonStringMessage
+	 * @param jsonStringMessage message
 	 */
 	public void onMessage(String jsonStringMessage);
 }

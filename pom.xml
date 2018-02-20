@@ -6,14 +6,14 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.github.hengyunabc</groupId>
+	<groupId>com.vorstella</groupId>
 	<artifactId>metrics-kafka</artifactId>
 	<version>0.0.1</version>
 
 	<name>metrics-kafka</name>
 	<description>Dropwizard Metrics reporter for kafka.</description>
-	<url>https://github.com/hengyunabc/metrics-kafka</url>
-	<inceptionYear>2015</inceptionYear>
+	<url>https://github.com/vorstella/metrics-kafka</url>
+	<inceptionYear>2018</inceptionYear>
 
 	<licenses>
 		<license>
@@ -26,6 +26,16 @@
 
 	<developers>
 		<developer>
+			<id>mstump</id>
+			<name>Matthew Stump</name>
+			<email>matt@vorstella.com</email>
+		</developer>		
+		<developer>
+			<id>dgillman</id>
+			<name>Duffy Gillman</name>
+			<email>duffy@vorstella.com</email>
+		</developer>		
+		<developer>
 			<id>hengyunabc</id>
 			<name>hengyunabc</name>
 			<email>hengyunabc@gmail.com</email>
@@ -33,15 +43,22 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:hengyunabc/metrics-kafka.git</connection>
-		<developerConnection>scm:git:git@github.com:hengyunabc/metrics-kafka.git</developerConnection>
-		<url>https://github.com/hengyunabc/metrics-kafka</url>
+		<connection>scm:git:git@github.com:vorstella/metrics-kafka.git</connection>
+		<developerConnection>scm:git:git@github.com:vorstella/metrics-kafka.git</developerConnection>
+		<url>https://github.com/vorstella/metrics-kafka</url>
 	</scm>
 
+	<repositories>
+		<repository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+	</repositories>
+
 	<properties>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<java.version>1.6</java.version>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -53,6 +70,9 @@
 
 		<!-- Test -->
 		<junit.version>4.11</junit.version>
+		<!-- tests do not automatically exit, so they have been defaulted not to run. tests can be run manually
+		     by supplying -DskipTests=false at the command line -->
+		<skipTests>true</skipTests>
 
 	</properties>
 
@@ -173,27 +193,21 @@
 				</property>
 			</activation>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
 			</build>
 		</profile>
 	</profiles>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -222,6 +236,60 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- check for known vulnerabilities in dependencies -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<!-- require explicit release to production -->
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+		    <id>ossrh</id>
+		    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<name>Sonatype Staging Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+	</distributionManagement>
 </project>
